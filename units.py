@@ -271,3 +271,12 @@ kilogram = BasicUnit(form="mass", name="kg", factor=1)
 kilometer = BasicUnit(form="space", name="km", factor=1000)
 minute = BasicUnit(form="time", name="min", factor=60)
 gram = BasicUnit(form="mass", name="g", factor=0.001)
+
+velocity_dim = DimensionStructure(up={"space" : 1, "time" : -1})
+meterPerSecond = ComplexUnit(dim=velocity_dim, basic_unit_map={"space":meter, "time":second})
+
+acceleration_dim = DimensionStructure(up={"space" : 1, "time" : -2})
+meterPerSecond2 = ComplexUnit(dim=acceleration_dim, basic_unit_map={"space":meter, "time":second})
+
+force_dim = DimensionStructure(up={"space" : 1, "time" : -2, "mass" : 1})
+newton = ComplexUnit(dim=force_dim, basic_unit_map={"space":meter, "time":second, "mass": kilogram})
