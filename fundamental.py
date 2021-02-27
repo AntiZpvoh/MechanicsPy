@@ -85,25 +85,4 @@ class Quantity:
     def __str__(self):
         return "{} {}".format(self.value, self.unit)
 
-# class Matter:
-#     def __init__(self, mass=1):
-#         self.mass = mass
-
-# class Particle(Matter):
-#     def __init__(self, mass=1, position=Position(0, 0, 0)):
-#         Matter.__init__(self, mass)
-#         self.position = position
-
-if __name__=="__main__":
-    l = Quantity(value=np.array([1.2, 3, 7.5]), unit=kilometer)
-    t = Quantity(value=np.float64(5), unit=minute)
-    print(l/t)
-    l.setUnit(meter)
-    t.setUnit(second)
-    print(l/t)
-    v = l/t
-    kmmin = ComplexUnit(dim=v.unit.dim, basic_unit_map={"space":kilometer, "time":minute})
-    v.setUnit(kmmin)
-    print(v)
-    print(v**2/l)
 
