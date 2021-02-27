@@ -18,16 +18,17 @@ class ReferenceSystem:
         y_std = normalize(axis_y.getStdValue())
         z_std = normalize(axis_z.getStdValue())
         self.axis_matrix = np.stack((x_std, y_std, z_std))
+        print(self.axis_matrix)
         if not np.all(np.dot(self.axis_matrix, self.axis_matrix.T) == np.identity(3)):
             raise NotOrthogonalError()
 
     def stdToRef(self, position):
         std_pos_in_std = position.getStdValue()
-        std_pos_in_ref = np.dot(self.axis_matrix, (std_pos_in_std - self.origin).T)
+        std_pos_in_ref = np.dot(self.axis_matrix, (std_pos_in_std - self.origin.getStdValue()).T)
         return Position(value=position.unit.stdToUnit(std_pos_in_ref), unit=position.unit)
 
     def refToStd(self, position):
         std_pos_in_std = position.getStdValue()
-        std_pos_in_ref = np.dot(self.axis_matrix.T, (std_pos_in_std + self.origin).T)
+        std_pos_in_ref = np.dot(self.axis_matrix.T, (std_pos_in_std + self.origin.getStdValue()).T)
         return Position(value=position.unit.stdToUnit(std_pos_in_ref), unit=position.unit)
 
