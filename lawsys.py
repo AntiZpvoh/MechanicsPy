@@ -25,9 +25,13 @@ def naive_motion_update(obj):
     obj.velocity += acceleration * d
 
 def gravity_force_update(obj1, obj2):
+    if not isinstance(obj1, DynamicObject) or not isinstance(obj2, DynamicObject):
+        return
     G_unit = newton*(meter**2)/(kilogram**2)
     G_quantity = Quantity(G, unit=G_unit)
     r2 = (obj1.position - obj2.position).getSquareSum()
     gravity = G_quantity * obj1.mass * obj2.mass / r2
     obj1.force += gravity
     obj2.force += gravity
+
+GravityClassicalLawSystem = LawSystem(naive_ref_translate, naive_motion_update, [gravity_force_update])
