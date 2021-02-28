@@ -2,6 +2,11 @@ import numpy as np
 from units import *
 
 d = np.float64(1E-20)
+c = 3E8
+G = 6.67259E-11
+
+def normalize(vector):
+    return vector / np.power(np.sum(np.power(vector, 2)), 0.5)
 
 class QuantityNotRightTypeError(RuntimeError):
     def __init__(self):
@@ -74,6 +79,12 @@ class Quantity:
 
     def getStdValue(self):
         return self.__std_val__
+
+    def getAbsValue(self):
+        return Quantity(np.sum(self.value**2) ** 0.5, self.unit)
+
+    def getSquareSum(self):
+        return Quantity(np.sum(self.value**2), self.unit)
 
     def setUnit(self, unit):
         dim_equal = False
@@ -171,6 +182,22 @@ class Force(Quantity):
         if type(unit) == ComplexUnit and unit.dim == force_dim:
             if value is None:
                 Quantity.__init__(self, np.array([fx, fy, fz], dtype=np.float64), unit)
+            else:
+                Quantity.__init__(self, value, unit)
+        else:
+            raise QuantityNotRightTypeError()
+
+    def output(self):
+        return "{} {}".format(self.value, self.unit)
+
+    def __str__(self):
+        return "{} {}".format(self.value, self.unit)
+
+class MinkowskiEvent(Quantity):
+    def __init__(self, x = 0, y = 0, z = 0, t = 0, unit = meter, value = None):
+        if type(unit) == BasicUnit and unit.form == "space":
+            if value is None:
+                Quantity.__init__(self, np.array([x, y, z, complex(0, c*t)]), unit)
             else:
                 Quantity.__init__(self, value, unit)
         else:
